@@ -67,7 +67,7 @@ if(require.main == module) {//testaroume an to arxeio trexei apeutheias apo to n
     program//commander
 	.option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
 	.option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
-	.option('-u, --url <url_file>' , 'Path to index.html via url' , clone(assertFileExists), URLFILE_DEFAULT)
+	.option('-u, --url <url_file>' , 'Path to index.html via url' , clone(assertFileExists))
 	.parse(process.argv);
     var checkJson=null;
     if (program.url !== null){
