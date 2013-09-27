@@ -27,7 +27,7 @@ var cheerio = require('cheerio');//implementaion of jquery..loads html
 var HTMLFILE_DEFAULT = "index.html";//default html file
 var CHECKSFILE_DEFAULT = "checks.json";//default file gia ta checks
 var URLFILE_DEFAULT = "http://fathomless-crag-6852.herokuapp.com/";//default url -- dokimi
-var rest = require('./restler');//dokimi
+var rest = require('restler');//dokimi
 
 var assertFileExists = function(infile) {//pairnei ws orisma ena arxeio kai elegxei an auto to arxeio yparxei
     var instr = infile.toString();
