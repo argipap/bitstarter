@@ -70,14 +70,14 @@ if(require.main == module) {//testaroume an to arxeio trexei apeutheias apo to n
 	.option('-u, --url <url_file>' , 'Path to index.html via url' , clone(assertFileExists), URLFILE_DEFAULT)
 	.parse(process.argv);
     var checkJson=null;
-    if (program.url !== null){
+/*    if (program.url !== null){
 	fs2 = require('fs');
 	fs2.writeFile('urlfile',rest.get(program.url),function (err) {
 	if (err) return console.log(err);
 	console.log('Something went wrong...');
 	});
 	checkJson = checkHtmlFile('urlfile', program.checks);
-    }
+    }*/
     checkJson = checkHtmlFile(program.file, program.checks);
     var outJson = JSON.stringify(checkJson, null, 4);
     console.log(outJson);
