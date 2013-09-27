@@ -70,7 +70,7 @@ if(require.main == module) {//testaroume an to arxeio trexei apeutheias apo to n
 	.option('-u, --url <url_file>' , 'Path to index.html via url' , clone(assertFileExists),URLFILE_DEFAULT)
 	.parse(process.argv);
     var checkJson=null;
-    if (program.url !== null){
+    if (program.url !== ""){
 	console.log("mpainei kai eisai vlakas"+program.url);
 	fs2 = require('fs');
 	fs2.writeFile('urlfile',rest.get(program.url),function (err) {
