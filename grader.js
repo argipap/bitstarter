@@ -71,6 +71,7 @@ if(require.main == module) {//testaroume an to arxeio trexei apeutheias apo to n
 	.parse(process.argv);
     var checkJson=null;
     if (program.url !== ""){
+	console.log("mpainei?");
 	fs2 = require('fs');
 	fs2.writeFile(program.url,rest.get(program.url),function (err) {
 	if (err) return console.log(err);
