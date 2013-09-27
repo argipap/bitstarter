@@ -26,7 +26,7 @@ var program = require('commander');//commander des arguments
 var cheerio = require('cheerio');//implementaion of jquery..loads html
 var HTMLFILE_DEFAULT = "index.html";//default html file
 var CHECKSFILE_DEFAULT = "checks.json";//default file gia ta checks
-var URLFILE_DEFAULT = "http://fathomless-crag-6852.herokuapp.com/";//default url -- dokimi
+var URLFILE_DEFAULT = "";//default url -- dokimi
 var rest = require('restler');//dokimi
 
 var assertFileExists = function(infile) {//pairnei ws orisma ena arxeio kai elegxei an auto to arxeio yparxei
@@ -67,7 +67,7 @@ if(require.main == module) {//testaroume an to arxeio trexei apeutheias apo to n
     program//commander
 	.option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
 	.option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
-	.option('-u, --url <url_file>' , 'Path to index.html via url' , clone(assertFileExists))
+	.option('-u, --url <url_file>' , 'Path to index.html via url' , clone(assertFileExists),URLFILE_DEFAULT)
 	.parse(process.argv);
     var checkJson=null;
     if (program.url !== null){
