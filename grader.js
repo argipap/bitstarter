@@ -26,7 +26,7 @@ var program = require('commander');//commander des arguments
 var cheerio = require('cheerio');//implementaion of jquery..loads html
 var HTMLFILE_DEFAULT = "index.html";//default html file
 var CHECKSFILE_DEFAULT = "checks.json";//default file gia ta checks
-var URLFILE_DEFAULT = "";//default url -- dokimi
+var URLFILE_DEFAULT = "http://fathomless-crag-6852.herokuapp.com/";//default url -- dokimi
 var rest = require('restler');//dokimi
 
 var assertFileExists = function(infile) {//pairnei ws orisma ena arxeio kai elegxei an auto to arxeio yparxei
@@ -40,6 +40,10 @@ var assertFileExists = function(infile) {//pairnei ws orisma ena arxeio kai eleg
 
 var cheerioHtmlFile = function(htmlfile) {
     return cheerio.load(fs.readFileSync(htmlfile));//epistrefei ta periexomena toy htmlfile kai ta kanei load sto cheriohtmlfile
+};
+
+var cheerioUrlFile = function(urlfile) {
+    return cheerio.load(rest.get(program.url));
 };
 
 var loadChecks = function(checksfile) {//epistrefei ta periexomena toy checks.json kai ta kanei parse
@@ -57,6 +61,17 @@ var checkHtmlFile = function(htmlfile, checksfile) {
     return out;//episrtefei enan pinaka out me ola ta stoixeria apo to parsing
 };
 
+var checkUrlFile = function(urlfile, checksfile) {
+    $ = cheerioUrlFile(urlfile);
+    var checks = loadChecks(checksfile).sort();
+    var out = {};
+    for(var ii in checks) {
+	var present = $(checks[ii]).length > 0;//an to ii tou pinaka checks exei lenght>0
+	out[checks[ii]] = present;//to vazi ston pinaka out
+    }
+    return out;//episrtefei enan pinaka out me ola ta stoixeria apo to parsing
+};
+
 var clone = function(fn) {
     // Workaround for commander.js issue.
     // http://stackoverflow.com/a/6772648
@@ -67,21 +82,14 @@ if(require.main == module) {//testaroume an to arxeio trexei apeutheias apo to n
     program//commander
 	.option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
 	.option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
-	.option('-u, --url <url_file>' , 'Path to index.html via url' , clone(assertFileExists),URLFILE_DEFAULT)
+	.option('-u, --url <url_file>' , 'Path to index.html via url', URLFILE_DEFAULT)
 	.parse(process.argv);
     var checkJson=null;
-console.log(program.url+"/n"+program.file+program.checks);
-    if (program.url !== ""){
-	console.log("mpainei?");
-	fs2 = require('fs');
-	fs2.writeFile(program.url,rest.get(program.url),function (err) {
-	if (err) return console.log(err);
-	console.log('Something went wrong...');
-	});
-	checkJson = checkHtmlFile('urlfile', program.checks);
+    if (!program.url){
+	checkJson = checkHtmlFile(program.file, program.checks);
     }
     else{
-	checkJson = checkHtmlFile(program.file, program.checks);
+	checkJson = checkUrlFile(program.url, program.checks);
     }
     var outJson = JSON.stringify(checkJson, null, 4);
     console.log(outJson);
