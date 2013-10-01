@@ -70,6 +70,7 @@ if(require.main == module) {//testaroume an to arxeio trexei apeutheias apo to n
 	.option('-u, --url <url_file>' , 'Path to index.html via url' , clone(assertFileExists),URLFILE_DEFAULT)
 	.parse(process.argv);
     var checkJson=null;
+console.log(program.url+"/n"+program.file+program.checks);
     if (program.url !== ""){
 	console.log("mpainei?");
 	fs2 = require('fs');
