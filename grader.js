@@ -26,8 +26,6 @@ var program = require('commander');//commander des arguments
 var cheerio = require('cheerio');//implementaion of jquery..loads html
 var HTMLFILE_DEFAULT = "index.html";//default html file
 var CHECKSFILE_DEFAULT = "checks.json";//default file gia ta checks
-var URLFILE_DEFAULT = "http://fathomless-crag-6852.herokuapp.com/";//default url -- dokimi
-var rest = require('restler');//dokimi
 
 var assertFileExists = function(infile) {//pairnei ws orisma ena arxeio kai elegxei an auto to arxeio yparxei
     var instr = infile.toString();
@@ -43,7 +41,17 @@ var cheerioHtmlFile = function(htmlfile) {
 };
 
 var cheerioUrlFile = function(urlfile) {
-    return cheerio.load(rest.get(program.url));
+    var sys = require('util'),
+    rest = require('restler');
+    var url = rest.get(urlfile).on('complete', function(result) {
+	if (result instanceof Error) {
+	    sys.puts('Error: ' + result.message);
+	    this.retry(5000); // try again after 5 sec
+	} else {
+//	    sys.puts(result);
+	  }
+    });
+    return cheerio.load(url);
 };
 
 var loadChecks = function(checksfile) {//epistrefei ta periexomena toy checks.json kai ta kanei parse
@@ -82,13 +90,16 @@ if(require.main == module) {//testaroume an to arxeio trexei apeutheias apo to n
     program//commander
 	.option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
 	.option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
-	.option('-u, --url <url_file>' , 'Path to index.html via url', URLFILE_DEFAULT)
+	.option('-u, --url <url_file>' , 'Path to index.html via url')
 	.parse(process.argv);
     var checkJson=null;
     if (!program.url){
+console.log("nau file");
 	checkJson = checkHtmlFile(program.file, program.checks);
     }
     else{
+console.log("nai url");
+//checkJson = checkHtmlFile(program.file, program.checks);
 	checkJson = checkUrlFile(program.url, program.checks);
     }
     var outJson = JSON.stringify(checkJson, null, 4);
