@@ -72,10 +72,11 @@ var checkHtmlFile = function(htmlfile, checksfile) {
 var checkUrlFile = function(urlfile, checksfile) {
     $ = cheerioUrlFile(urlfile);
     var checks = loadChecks(checksfile).sort();
-    var out = {};
+    var out = {};//kenos pinakas
     for(var ii in checks) {
-	var present = $(checks[ii]).length > 0;//an to ii tou pinaka checks exei lenght>0
-	out[checks[ii]] = present;//to vazi ston pinaka out
+	var bool = checks[ii].length > 0;
+	var present = bool;//an to ii tou pinaka checks exei
+	out[checks[ii]] = present;//to vazi ston pinaka
     }
     return out;//episrtefei enan pinaka out me ola ta stoixeria apo to parsing
 };
